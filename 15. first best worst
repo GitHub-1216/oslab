@@ -1,0 +1,82 @@
+#include <stdio.h>
+
+#define NUM_BLOCKS 5
+#define NUM_PROCESSES 4
+
+int blockSize[NUM_BLOCKS] = {100, 500, 200, 300, 600};
+int processSize[NUM_PROCESSES] = {212, 417, 112, 426};
+int allocationFirstFit[NUM_PROCESSES];
+int allocationWorstFit[NUM_PROCESSES];
+int allocationBestFit[NUM_PROCESSES];
+
+// Function to perform First Fit memory allocation
+void firstFit() {
+    for (int i = 0; i < NUM_PROCESSES; i++) {
+        for (int j = 0; j < NUM_BLOCKS; j++) {
+            if (blockSize[j] >= processSize[i]) {
+                allocationFirstFit[i] = j;
+                blockSize[j] -= processSize[i];
+                break;
+            }
+        }
+    }
+}
+
+// Function to perform Worst Fit memory allocation
+void worstFit() {
+    for (int i = 0; i < NUM_PROCESSES; i++) {
+        int worstIndex = -1;
+        for (int j = 0; j < NUM_BLOCKS; j++) {
+            if (blockSize[j] >= processSize[i]) {
+                if (worstIndex == -1 || blockSize[j] > blockSize[worstIndex]) {
+                    worstIndex = j;
+                }
+            }
+        }
+        if (worstIndex != -1) {
+            allocationWorstFit[i] = worstIndex;
+            blockSize[worstIndex] -= processSize[i];
+        }
+    }
+}
+
+// Function to perform Best Fit memory allocation
+void bestFit() {
+    for (int i = 0; i < NUM_PROCESSES; i++) {
+        int bestIndex = -1;
+        for (int j = 0; j < NUM_BLOCKS; j++) {
+            if (blockSize[j] >= processSize[i]) {
+                if (bestIndex == -1 || blockSize[j] < blockSize[bestIndex]) {
+                    bestIndex = j;
+                }
+            }
+        }
+        if (bestIndex != -1) {
+            allocationBestFit[i] = bestIndex;
+            blockSize[bestIndex] -= processSize[i];
+        }
+    }
+}
+
+// Function to display the allocation results
+void displayAllocation(const char *strategy, int allocation[]) {
+    printf("Allocation using %s strategy:\n", strategy);
+    printf("Process No.\tProcess Size\tBlock No.\n");
+    for (int i = 0; i < NUM_PROCESSES; i++) {
+        printf("P%d\t\t%d\t\t%d\n", i, processSize[i], allocation[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    firstFit();
+    displayAllocation("First Fit", allocationFirstFit);
+
+    worstFit();
+    displayAllocation("Worst Fit", allocationWorstFit);
+
+    bestFit();
+    displayAllocation("Best Fit", allocationBestFit);
+
+    return 0;
+}
