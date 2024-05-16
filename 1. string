@@ -1,0 +1,57 @@
+1.	Write a shell script program for different string handling functions.
+#!/bin/bash
+
+# Function to find the length of a string
+string_length() {
+    str=$1
+    len=${#str}
+    echo "Length of the string \"$str\" is: $len"
+}
+
+# Function to concatenate two strings
+concat_strings() {
+    str1=$1
+    str2=$2
+    concat_str=$str1$str2
+    echo "Concatenated string: $concat_str"
+}
+
+# Function to reverse a string
+reverse_string() {
+    str=$1
+    reverse_str=$(echo $str | rev)
+    echo "Reversed string: $reverse_str"
+}
+
+# Function to extract a substring
+substring() {
+    str=$1
+    start=$2
+    length=$3
+    sub_str=${str:start:length}
+    echo "Substring from position $start of length $length: $sub_str"
+}
+
+# Function to convert a string to lowercase
+to_lowercase() {
+    str=$1
+    lower_str=$(echo $str | tr '[:upper:]' '[:lower:]')
+    echo "Lowercase string: $lower_str"
+}
+
+# Function to convert a string to uppercase
+to_uppercase() {
+    str=$1
+    upper_str=$(echo $str | tr '[:lower:]' '[:upper:]')
+    echo "Uppercase string: $upper_str"
+}
+
+# Main script
+input_string="Hello, World!"
+
+string_length "$input_string"
+concat_strings "Hello, " "World!"
+reverse_string "$input_string"
+substring "$input_string" 3 5
+to_lowercase "$input_string"
+to_uppercase "$input_string"
